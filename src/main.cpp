@@ -1,33 +1,33 @@
 #include <Arduino.h>
+
 #define BUZZER_PIN 18
-#define LED1_PIN 19   // primeiro LED
-#define LED2_PIN 21   // segundo LED
+#define LED1_PIN   19
+#define LED2_PIN   21
+
+#define BUZZER_CHANNEL 0
+#define BUZZER_RESOLUTION 8
 
 void setup() {
-  pinMode(BUZZER_PIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
+
+  ledcSetup(BUZZER_CHANNEL, 2000, BUZZER_RESOLUTION);
+  ledcAttachPin(BUZZER_PIN, BUZZER_CHANNEL);
+
+  randomSeed(analogRead(0));
 }
 
-void loop() {
-  // Som de queda (apito descendo)
-  for (int freq = 1000; freq > 100; freq -= 20) {
-    tone(BUZZER_PIN, freq);
-    digitalWrite(LED1_PIN, HIGH);   // LED1 acende durante a queda
-    digitalWrite(LED2_PIN, LOW);
-    delay(30);
-  }
-  noTone(BUZZER_PIN);
-  digitalWrite(LED1_PIN, LOW);
+void shotSound() {
+  // ESTALO inicial (tiro)
+  ledcWriteTone(BUZZER_CHANNEL, 1800);
+  digitalWrite(LED1_PIN, HIGH);
+  digitalWrite(LED2_PIN, HIGH);
+  delay(15);
 
-  delay(200); // pausa antes da "explosão"
+  // Ruído rápido (eco / impacto)
+  for (int i = 0; i < 20; i++) {
+    ledcWriteTone(BUZZER_CHANNEL, random(400, 2000));
 
-  // Explosão (tons rápidos + LEDs piscando)
-  for (int i = 0; i < 50; i++) {
-    int freq = random(200, 2000); // frequências aleatórias
-    tone(BUZZER_PIN, freq);
-
-    // alterna LEDs para simular flash
     if (i % 2 == 0) {
       digitalWrite(LED1_PIN, HIGH);
       digitalWrite(LED2_PIN, LOW);
@@ -35,12 +35,16 @@ void loop() {
       digitalWrite(LED1_PIN, LOW);
       digitalWrite(LED2_PIN, HIGH);
     }
-
-    delay(20);
+    delay(8);
   }
-  noTone(BUZZER_PIN);
+
+  // Desliga tudo
+  ledcWriteTone(BUZZER_CHANNEL, 0);
   digitalWrite(LED1_PIN, LOW);
   digitalWrite(LED2_PIN, LOW);
+}
 
-  delay(500); // pausa longa antes de repetir
+void loop() {
+  shotSound();   // dispara o tiro
+  delay(600);    // tempo entre tiros
 }
