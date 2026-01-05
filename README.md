@@ -1,65 +1,61 @@
-🔊 ESP32 – Som de Queda e Explosão com Buzzer e LEDs
+# 🎵 Projeto ESP32 - Melodia Batman com LEDs e Relé
 
-Este projeto utiliza um ESP32, um buzzer e dois LEDs para simular um efeito sonoro de queda seguido de explosão, com efeitos visuais sincronizados.
+Este projeto utiliza um **ESP32** para tocar a melodia clássica do Batman em um buzzer, alternar LEDs e acionar um relé quando um botão é pressionado.
 
-O som é gerado variando a frequência do buzzer, enquanto os LEDs piscam para simular impacto e explosão 💥.
+---
 
-📦 Componentes Utilizados
+## ⚙️ Funcionalidades
+- 🔘 Botão: inicia a execução da melodia.
+- 🔊 Buzzer: reproduz notas musicais da música tema do Batman.
+- 💡 LEDs: piscam alternadamente conforme as notas.
+- ⚡ Relé: é acionado durante a execução da melodia.
 
-1× ESP32
+---
 
-1× Buzzer (preferencialmente passivo)
+## 🛠️ Componentes Utilizados
+- ESP32 DevKit
+- 1 Buzzer passivo
+- 2 LEDs (com resistores de 220 Ω)
+- 1 Módulo Relé (5V ou compatível com ESP32)
+- 1 Botão (push button)
+- Resistores (10kΩ para pull-down se necessário)
+- Protoboard e jumpers
 
-2× LEDs
+---
 
-Protoboard (opcional)
+## 🔌 Conexões
+- **Buzzer** → Pino 18 e GND  
+- **LED1** → Pino 19 com resistor de 220 Ω para GND  
+- **LED2** → Pino 21 com resistor de 220 Ω para GND  
+- **Botão** → Pino 23 e GND (usando `INPUT_PULLUP`)  
+- **Relé** → IN no Pino 22, VCC em 5V, GND em GND  
 
-🔌 Ligações (Pinagem)
-Componente	Pino ESP32
-Buzzer (+)	GPIO 18
-Buzzer (–)	GND
-LED 1	GPIO 19 (com resistor)
-LED 2	GPIO 21 (com resistor)
-LEDs (–)	GND
+---
 
-⚙️ Funcionamento do Código
+## 📜 Código Principal
+O código está em `src/main.cpp` e implementa:
+- Configuração dos pinos no `setup()`
+- Função `playNote()` para tocar notas e alternar LEDs
+- Loop principal que aguarda o botão ser pressionado para executar a melodia e acionar o relé
 
-O programa executa continuamente dois efeitos principais:
+---
 
-1️⃣ Som de queda
+## ▶️ Como Executar
+1. Instale o [PlatformIO](https://platformio.org/) ou use a IDE Arduino.  
+2. Conecte o ESP32 via USB.  
+3. Carregue o código no dispositivo.  
+4. Pressione o botão para iniciar a melodia e observar LEDs + relé funcionando.
 
-O buzzer começa em uma frequência alta (1000 Hz)
+---
 
-A frequência vai diminuindo gradualmente até 100 Hz
+## 📈 Possíveis Melhorias
+- Adicionar mais músicas ou sequências de notas.  
+- Controlar o tempo de acionamento do relé de forma independente.  
+- Implementar debounce no botão para evitar múltiplos disparos.  
 
-Simula um apito descendente, como algo caindo
+---
 
-O LED 1 permanece aceso durante esse efeito
-
-2️⃣ Explosão
-
-O buzzer emite sons rápidos com frequências aleatórias
-
-Os LEDs piscam alternadamente, criando um efeito de flash
-
-Simula uma explosão ou impacto final
-
-Após a explosão, o sistema aguarda um curto tempo e repete o efeito.
-
-🧠 Lógica Principal do Código
-
-tone() é usado para gerar som no buzzer
-
-random() cria variação de frequência para o efeito de explosão
-
-digitalWrite() controla os LEDs
-
-delay() define o ritmo do som e dos efeitos visuais
-
-⚠️ Observações Importantes
-
-Em ESP32, a função tone() pode não funcionar perfeitamente em todas as versões
-
-Para projetos mais avançados, recomenda-se usar PWM com ledcWriteTone()
-
-O volume do buzzer pode variar conforme o modelo utilizado
+## 👨‍💻 Autor
+**Iago Nobrega Araujo**  
+📍 Ilhéus, Bahia, Brasil  
+🔗 [LinkedIn](https://www.linkedin.com/in/iago-nobrega-38087a208/) | [GitHub](https://github.com/IagoNobrega)
